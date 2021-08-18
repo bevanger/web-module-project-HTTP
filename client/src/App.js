@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import MovieList from './components/MovieList';
 import Movie from './components/Movie';
+import AddMovie from './components/AddMovie';
 
 import MovieHeader from './components/MovieHeader';
 
@@ -26,6 +27,10 @@ const App = (props) => {
   }, []);
 
   const deleteMovie = (id)=> {
+    let newMovies = movies.filter((movie) => movie.id.toString() !== id)
+    //console.log("new movie", newMovies)
+    setMovies(newMovies)
+    //console.log("movies", movies);
   }
 
   const addToFavorites = (movie) => {
@@ -44,11 +49,17 @@ const App = (props) => {
           <FavoriteMovieList favoriteMovies={favoriteMovies}/>
         
           <Switch>
+
+            <Route path="/add-movie/:id">
+              <AddMovie setMovies={setMovies}/>
+            </Route>
+
             <Route path="/movies/edit/:id">
+            <EditMovieForm setMovies={setMovies}/>
             </Route>
 
             <Route path="/movies/:id">
-              <Movie/>
+              <Movie setMovies={setMovies} deleteMovie={deleteMovie}/>
             </Route>
 
             <Route path="/movies">
